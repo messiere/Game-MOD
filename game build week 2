@@ -1,0 +1,147 @@
+//BY Ethan Messier
+//final pong 
+// ball is at reduce speed for testing 
+//TO DO = add players / A_D player one / <_> (L) (R) arrow keys player two 
+//bugs / make sure menu bug is gone = game auto starting after game lost.  
+
+var ball;
+var dx = 0.5;
+var dy = 0.5;
+var end = false;
+
+function start(){
+    mouseClickMethod(MStart);
+  	var text = new Text("click to start");
+	text.setPosition(getWidth() / 3.3, getHeight() / 2);
+	add(text);
+}
+
+
+function MStart(){
+    end = false;
+    background();
+	ball = new Circle(20);
+	ball.setPosition(getWidth() / 2, getHeight() / 2);
+	ball.setColor(Color.red);
+	add(ball);
+	setTimer(draw, 20);
+}
+
+
+function background(){
+    
+    	var X = getWidth();
+	var Y = getHeight();
+	var rect = new Rectangle(X, Y);
+	rect.setPosition(0, 0);
+	rect.setColor(Color.gray);
+	add(rect);
+    
+	var X = getWidth();
+	var Y = getHeight() / 50;
+	var rect = new Rectangle(X, Y);
+	rect.setPosition(0, 0);
+	rect.setColor(Color.black);
+	add(rect);
+	
+	var X = getWidth();
+	var Y = getHeight() / 50;
+	var rect = new Rectangle(X, Y);
+	var H = Y *49; 
+	rect.setPosition(0, H);
+	rect.setColor(Color.black);
+	add(rect);
+	
+		var X = getWidth() /50;
+	var Y = getHeight();
+	var rect = new Rectangle(X, Y);
+	rect.setPosition(0, 0);
+	rect.setColor(Color.black);
+	add(rect);
+	
+	var X = getWidth() / 50;
+	var Y = getHeight();
+	var rect = new Rectangle(X, Y);
+	var H = X * 49; 
+	rect.setPosition(H, 0);
+	rect.setColor(Color.black);
+	add(rect);
+
+}
+
+
+
+function draw(){
+	checkWalls();
+	gameEnd();
+	
+}
+
+
+function checkWalls(){
+	// Bounce off right wall
+	if(ball.getX() + ball.getRadius() > getWidth()-10){
+		dx = -dx;
+	}
+	
+	// Bounce off left wall
+	if(ball.getX() - ball.getRadius() < 10){
+		dx = -dx;
+	}
+	
+	// Bounce off bottom wall
+	if(ball.getY() + ball.getRadius() > getHeight()- 10){
+		dy = -dy;
+		end = true;
+		gameEnd();
+	}
+	
+	// Bounce off top wall
+	if(ball.getY() - ball.getRadius() < 10){
+		dy = -dy;
+		end = true;
+		gameEnd();
+	}
+}
+
+
+
+function gameEnd(){
+    if(end==false){
+    ball.move(dx, dy);  
+    }
+    
+    if(end==true){
+    ball.setPosition(getWidth() / 2, getHeight() / 2);
+    
+    mouseClickMethod(RStart);
+    
+    var X = getWidth();
+	var Y = getHeight();
+	var rect = new Rectangle(X, Y);
+	rect.setPosition(0, 0);
+	rect.setColor(Color.black);
+	add(rect);
+    
+    var text = new Text("GAME OVER");
+	text.setPosition(getWidth() / 3.5, getHeight() / 2);
+	text.setColor(Color.white);
+	add(text);
+	
+	 var text = new Text("click to play agian");
+	text.setPosition(getWidth() / 4.3, getHeight() / 1.5);
+	text.setColor(Color.white);
+	add(text);
+    }
+}
+
+
+function RStart(){
+    var X = getWidth();
+	var Y = getHeight();
+	var rect = new Rectangle(X, Y);
+	rect.setPosition(0, 0);
+	rect.setColor(Color.white);
+	add(rect);
+    MStart();
+}

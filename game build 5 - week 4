@@ -1,0 +1,206 @@
+//BY Ethan Messier
+//final pong 
+
+var ball;
+var dx = 1;
+var dy = 1;
+var end = false;
+var playerO;
+var playerT;
+setTimer(draw, 20);
+	
+function start(){
+    mouseClickMethod(MStart);
+    
+    TStart();
+    
+	ball = new Circle(20);
+	ball.setPosition(getWidth() / 2, getHeight() / 2);
+	ball.setColor(Color.red);
+	
+}
+
+
+function TStart(){
+      	var text = new Text("click to start");
+	text.setPosition(getWidth() / 10 * 3.3, getHeight() / 2);
+	add(text);
+	
+	  	var text = new Text("< - >");
+	text.setPosition(getWidth() / 10 * 4.3 , getHeight() / 7);
+	add(text);
+	
+	  	var text = new Text("A - D");
+	text.setPosition(getWidth() / 10 * 4.3 , getHeight() / 7 * 6);
+	add(text);
+}
+
+
+function MStart(){
+    removeAll();
+    end = false;
+    background();
+	add(ball);
+	
+	playerO = new Rectangle(60, 5);
+	playerO.setPosition(100, 20);
+	playerO.setColor(Color.red);
+	add(playerO);
+	
+	var Y = getHeight()/50;
+	var H = Y * 50;
+	var T = H - 25;
+	playerT = new Rectangle(60, 5);
+	playerT.setPosition(100, T);
+	playerT.setColor(Color.red);
+	add(playerT);
+	
+	keyDownMethod(keyDown);
+}
+
+
+function keyDown(e){
+	if(e.keyCode == Keyboard.LEFT){
+		playerO.move(-5, 0);
+	}
+	
+	if(e.keyCode == Keyboard.RIGHT){
+		playerO.move(5, 0);
+	}
+	
+	if(e.keyCode == Keyboard.letter('a')){
+		playerT.move(-5, 0);
+	}
+	
+	if(e.keyCode == Keyboard.letter('d')){
+		playerT.move(5, 0);
+	}
+}
+
+
+function background(){
+    
+    
+	var X = getWidth();
+	var Y = getHeight() / 50;
+	var rect = new Rectangle(X, Y);
+	rect.setPosition(0, 0);
+	rect.setColor(Color.black);
+	add(rect);
+	
+	var X = getWidth();
+	var Y = getHeight() / 50;
+	var rect = new Rectangle(X, Y);
+	var H = Y *49; 
+	rect.setPosition(0, H);
+	rect.setColor(Color.black);
+	add(rect);
+	
+		var X = getWidth() /50;
+	var Y = getHeight();
+	var rect = new Rectangle(X, Y);
+	rect.setPosition(0, 0);
+	rect.setColor(Color.black);
+	add(rect);
+	
+	var X = getWidth() / 50;
+	var Y = getHeight();
+	var rect = new Rectangle(X, Y);
+	var H = X * 49; 
+	rect.setPosition(H, 0);
+	rect.setColor(Color.black);
+	add(rect);
+
+}
+
+
+function draw(){
+	checkWalls();
+	gameEnd();
+	bounce();
+}
+
+
+function bounce(){
+    var BX = ball.getX();
+	var By = ball.getY();
+	
+	var elem = getElementAt(BX , By+20.1);
+	var elemT = getElementAt(BX , By-20.1);
+	    if(elem != null){
+	     dy = -dy;
+	    }
+	    if(elemT != null){
+	     dy = -dy;
+	    }
+}
+
+
+function checkWalls(){
+	if(ball.getX() + ball.getRadius() > getWidth()-10){
+		dx = -dx;
+	}
+	
+	if(ball.getX() - ball.getRadius() < 10){
+		dx = -dx;
+	}
+	
+	if(ball.getY() + ball.getRadius() > getHeight()- 10){
+		dy = -dy;
+		end = true;
+		gameEnd();
+	}
+	
+	if(ball.getY() - ball.getRadius() < 10){
+		dy = -dy;
+		end = true;
+		gameEnd();
+	}
+}
+
+
+function gameEnd(){
+    if(end==false){
+    ball.move(dx, dy);  
+    }
+    
+    if(end==true){
+    ball.setPosition(getWidth() / 2, getHeight() / 2);
+    
+    mouseClickMethod(RStart);
+    
+    var X = getWidth();
+	var Y = getHeight();
+	var rect = new Rectangle(X, Y);
+	rect.setPosition(0, 0);
+	rect.setColor(Color.black);
+	add(rect);
+    
+    var text = new Text("GAME OVER");
+	text.setPosition(getWidth() / 3.5, getHeight() / 2);
+	text.setColor(Color.white);
+	add(text);
+	
+	 var text = new Text("click to play agian");
+	text.setPosition(getWidth() / 4.3, getHeight() / 1.5);
+	text.setColor(Color.white);
+	add(text);
+	
+    var text = new Text("By Ethan Messier", "9pt Arial");
+	text.setPosition(getWidth() /20 , getHeight() /20 * 19);
+	text.setColor(Color.white);
+	add(text);
+    }
+
+}
+
+
+function RStart(){
+    var X = getWidth();
+	var Y = getHeight();
+	var rect = new Rectangle(X, Y);
+	rect.setPosition(0, 0);
+	rect.setColor(Color.white);
+	add(rect);
+    MStart();
+}
